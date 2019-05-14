@@ -32,10 +32,12 @@ router.get('/students',function (req,res) {
     // })
 
 })
+// 渲染添加学生
 router.get('/students/new',function (req,res) {
     res.render('new.html')
 
 })
+//处理添加学生请求
 router.post('/students/new',function (req,res) {
     // console.log(req.body)
     //1.获取表单数据
@@ -49,6 +51,7 @@ router.post('/students/new',function (req,res) {
         res.redirect('/students')
     })
 })
+// 渲染修改页面
 router.get('/students/edit',function (req,res) {
     
     Student.findById(parseInt(req.query.id),(err,student) => {
@@ -74,7 +77,6 @@ router.post('/students/edit',function (req,res) {
         })
 })
 router.get('/students/delete',function (req,res) {
-    console.log(req)
     Student.deleteById(req.body.id,function (err) {
         if (err) {
             return res.status(500).send('Server error')

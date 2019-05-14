@@ -29,10 +29,12 @@ exports.save = (student,callback) => {
         }
         //将从文件中读取的字符串转成对象
         let students = JSON.parse(data).students
+        //保存时 保证学生id单一性
         student.id = students[students.length-1].id + 1
         //将添加的学生push到这个对象中
         students.push(student)
-        //将该对象转化为字符串
+        //将该对象转化为字符串 根据db.json格式进行保存
+
         let fileData = JSON.stringify({
             students:students
         })
@@ -41,6 +43,7 @@ exports.save = (student,callback) => {
             if (err) {
                 return callback(err)
             }
+            //如果成功 则err为null
             callback(null)
         })
     })
@@ -55,16 +58,15 @@ exports.updateById = (student,callback) => {
         let students = JSON.parse(data).students
         //student是传入的修改对象
         student.id = parseInt(student.id)
-        //箭头函数隐式返回
-        //先找到要修改的学生对象
+        
+        //先找到students中要修改的学生对象
         let stu = students.find((item) => {
             return item.id === student.id
         })
         //遍历对象中的键名
-        for (let key in stu) {
+        for (let key in student) {
             stu[key] = student[key]
         }
-        students.push(stu)
         // 将一个对象或数组转化为字符串
         let fileData = JSON.stringify({
             students:students
